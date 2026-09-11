@@ -175,7 +175,9 @@
 		height: 2px;
 		background: currentColor;
 		opacity: 0.25;
-		transition: width 0.4s v.$ease-editorial, opacity 0.3s ease;
+		transition:
+			width 0.4s v.$ease-editorial,
+			opacity 0.3s ease;
 
 		&.active {
 			width: 3rem;
@@ -196,7 +198,9 @@
 		font-size: 1rem;
 		border: 1px solid v.$line-dark;
 		border-radius: 50%;
-		transition: color 0.3s ease, background 0.3s ease;
+		transition:
+			color 0.3s ease,
+			background 0.3s ease;
 
 		&:hover {
 			color: v.$color-page;
@@ -212,11 +216,9 @@
 		}
 
 		&__slider {
-			height: calc(100svh - 20rem);
 			min-height: 15rem;
 			overflow-x: hidden;
 			overflow-y: auto;
-			-webkit-overflow-scrolling: touch;
 			scrollbar-width: none;
 
 			&::-webkit-scrollbar {
