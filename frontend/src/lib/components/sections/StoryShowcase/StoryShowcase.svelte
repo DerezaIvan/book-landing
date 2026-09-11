@@ -3,6 +3,7 @@
 	import { reveal } from '@/actions/reveal';
 
 	let activeSlide = $state(0);
+	let lightboxImage = $state<{ src: string; alt: string } | null>(null);
 
 	const examples = [
 		{
@@ -94,7 +95,31 @@
 	function showSlide(index: number) {
 		activeSlide = (index + examples.length) % examples.length;
 	}
+
+	function openLightbox(image: { src: string; alt: string }) {
+		lightboxImage = image;
+	}
+
+	function closeLightbox() {
+		lightboxImage = null;
+	}
+
+	function handleLightboxKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape') closeLightbox();
+	}
+
+	$effect(() => {
+		if (!lightboxImage) return;
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+
+		return () => {
+			document.body.style.overflow = previousOverflow;
+		};
+	});
 </script>
+
+<svelte:window onkeydown={handleLightboxKeydown} />
 
 <section class="story-showcase" aria-labelledby="story-showcase-title">
 	<header class="story-showcase__heading" data-reveal="words" use:reveal>
@@ -109,19 +134,33 @@
 						<div class="story-showcase__stack">
 							{#each example.cards.slice(0, 2) as card (card.position)}
 								<figure class="story-showcase__card story-showcase__card--{card.position}">
-									<img src={card.src} alt={card.alt} width="1400" height="788" loading="lazy" />
+									<button
+										class="story-showcase__image-button"
+										type="button"
+										onclick={() => openLightbox(card)}
+										aria-label={`Открыть изображение: ${card.alt}`}
+									>
+										<img src={card.src} alt={card.alt} width="1400" height="788" loading="lazy" />
+									</button>
 									<figcaption><span>{card.number}</span> {card.label}</figcaption>
 								</figure>
 							{/each}
 						</div>
 						<figure class="story-showcase__card story-showcase__card--feature">
-							<img
-								src={example.cards[2].src}
-								alt={example.cards[2].alt}
-								width="1400"
-								height="788"
-								loading="lazy"
-							/>
+							<button
+								class="story-showcase__image-button"
+								type="button"
+								onclick={() => openLightbox(example.cards[2])}
+								aria-label={`Открыть изображение: ${example.cards[2].alt}`}
+							>
+								<img
+									src={example.cards[2].src}
+									alt={example.cards[2].alt}
+									width="1400"
+									height="788"
+									loading="lazy"
+								/>
+							</button>
 							<figcaption><span>{example.cards[2].number}</span> {example.cards[2].label}</figcaption>
 						</figure>
 					</div>
@@ -150,6 +189,28 @@
 		</div>
 	</div>
 </section>
+
+{#if lightboxImage}
+	<div class="story-showcase__lightbox" role="dialog" aria-modal="true" aria-label="Просмотр иллюстрации">
+		<button
+			class="story-showcase__lightbox-backdrop"
+			type="button"
+			onclick={closeLightbox}
+			aria-label="Закрыть изображение"
+		></button>
+		<div class="story-showcase__lightbox-content">
+			<img src={lightboxImage.src} alt={lightboxImage.alt} />
+		</div>
+		<button
+			class="story-showcase__lightbox-close"
+			type="button"
+			onclick={closeLightbox}
+			aria-label="Закрыть изображение"
+		>
+			<img src={`${base}/images/icon-close.svg`} alt="" aria-hidden="true" />
+		</button>
+	</div>
+{/if}
 
 <style lang="scss">
 	@use '@/components/sections/StoryShowcase/StoryShowcase';
