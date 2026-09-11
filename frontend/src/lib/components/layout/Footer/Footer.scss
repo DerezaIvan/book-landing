@@ -1,0 +1,47 @@
+@use '@/styles/variables' as v;
+@use '@/styles/mixins' as m;
+
+.site-footer {
+	padding: 5rem v.$page-gutter 2rem;
+	color: #f6ede0;
+	background: v.$color-night;
+	border-top: 1px solid rgba(white, 0.12);
+
+	&__brand {
+		font-family: v.$font-serif;
+		font-size: clamp(3.4rem, 9.5vw, 10rem);
+		letter-spacing: -0.06em;
+		white-space: nowrap;
+
+		em {
+			color: #e4b587;
+			font-weight: 400;
+		}
+	}
+
+	&__meta {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 3rem;
+		padding-top: 1.4rem;
+		font-size: 0.62rem;
+		border-top: 1px solid rgba(white, 0.12);
+		opacity: 0.62;
+	}
+
+	@include m.tablet {
+		padding-inline: v.$page-gutter-mobile;
+
+		&__meta {
+			flex-direction: column;
+			gap: 0.8rem;
+		}
+	}
+
+	@include m.mobile {
+		&__brand {
+			line-height: 1;
+			white-space: normal;
+		}
+	}
+}

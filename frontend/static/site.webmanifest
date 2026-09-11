@@ -1,0 +1,11 @@
+{
+  "name": "Dereza Stories - персональные детские книги",
+  "short_name": "Dereza Stories",
+  "description": "Семейная студия персональных детских книг",
+  "lang": "ru-RU",
+  "start_url": "/book-landing/",
+  "scope": "/book-landing/",
+  "display": "standalone",
+  "background_color": "#f4efe5",
+  "theme_color": "#273129"
+}

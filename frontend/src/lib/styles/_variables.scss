@@ -1,0 +1,22 @@
+$font-sans: 'Manrope', sans-serif;
+$font-serif: 'Prata', serif;
+
+$color-milk: #f2ede3;
+$color-paper: #faf6ed;
+$color-ink: #262522;
+$color-berry: #914e51;
+$color-moss: #66705a;
+$color-apricot: #dcaa78;
+$color-forest: #203432;
+$color-night: #272622;
+$color-cream: #f8f3e9;
+$color-page: #f8f1e4;
+
+$line-dark: rgba($color-ink, 0.18);
+$line-light: rgba(white, 0.3);
+$ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+
+$page-gutter: 4vw;
+$page-gutter-mobile: 1.25rem;
+$breakpoint-tablet: 900px;
+$breakpoint-mobile: 520px;

@@ -1,0 +1,29 @@
+.book-flow {
+	position: relative;
+	z-index: 2;
+	height: var(--book-flow-height);
+	margin-top: -100svh;
+	background: transparent;
+
+	&__anchor {
+		position: absolute;
+		top: var(--book-flow-anchor);
+		left: 0;
+		width: 1px;
+		height: 1px;
+		pointer-events: none;
+	}
+
+	&__stage {
+		position: sticky;
+		top: 0;
+		height: 100svh;
+		overflow: hidden;
+		perspective: 2200px;
+		perspective-origin: left center;
+		isolation: isolate;
+		opacity: var(--book-flow-reveal);
+		transition: opacity 0.18s ease-out;
+	}
+
+}

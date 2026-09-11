@@ -1,0 +1,149 @@
+@use '@/styles/variables' as v;
+@use '@/styles/mixins' as m;
+
+.studio {
+	display: grid;
+	grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+	gap: 1.75rem;
+	align-items: center;
+	min-height: 100%;
+	padding: clamp(1.5rem, 2.5vw, 3rem);
+	background: #ddd3c1;
+
+	&__portrait {
+		position: relative;
+		justify-self: end;
+		width: min(100%, 34rem, calc((100svh - 3rem) * 0.75));
+		aspect-ratio: 3 / 4;
+		margin: 0;
+		overflow: hidden;
+		background: #bcb29e center / cover;
+		border: 1px solid rgba(white, 0.5);
+		border-radius: 1.35rem;
+		box-shadow:
+			0 2.2rem 4.5rem rgba(55, 43, 30, 0.24),
+			0 0.35rem 0.8rem rgba(55, 43, 30, 0.12);
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center;
+		}
+
+		figcaption {
+			position: absolute;
+			right: 1.2rem;
+			bottom: 1.2rem;
+			padding: 0.55rem 0.75rem;
+			color: #f7efe3;
+			font-size: 0.58rem;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			background: rgba(v.$color-ink, 0.58);
+			backdrop-filter: blur(8px);
+		}
+	}
+
+	&__copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: clamp(2rem, 4vw, 5rem) clamp(1.5rem, 3vw, 4rem) clamp(2rem, 4vw, 5rem) 0;
+
+		h2 {
+			@include m.editorial-heading(clamp(2.7rem, 4.6vw, 5rem));
+
+			margin: 2rem 0 3rem;
+		}
+
+		p {
+			max-width: 38rem;
+			font-size: 0.85rem;
+			line-height: 1.8;
+		}
+	}
+
+	&__eyebrow {
+		@include m.uppercase-label;
+	}
+
+	&__lead {
+		font-family: v.$font-serif;
+		font-size: 1.25rem !important;
+		line-height: 1.55 !important;
+	}
+
+	&__signature {
+		margin-top: 3rem;
+		font-family: v.$font-serif;
+		font-size: 1.7rem;
+		font-style: italic;
+	}
+
+	@include m.tablet {
+		grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+		gap: 1.5rem;
+		padding: 1.5rem;
+
+		&__portrait {
+			justify-self: end;
+			width: min(100%, 25rem);
+		}
+
+		&__copy {
+			padding: 1.5rem 0;
+
+			h2 {
+				margin: 1.25rem 0 1.75rem;
+				font-size: clamp(2.3rem, 6vw, 3.7rem);
+			}
+		}
+
+		&__signature {
+			margin-top: 1.75rem;
+		}
+	}
+
+	@media (max-width: 700px) {
+		grid-template-columns: 1fr;
+		gap: 1.25rem;
+		align-content: start;
+		padding: 2.75rem v.$page-gutter-mobile 2rem;
+
+		&__portrait {
+			justify-self: center;
+			width: min(100%, 24rem);
+			aspect-ratio: 16 / 10;
+
+			img {
+				object-position: center 24%;
+			}
+		}
+
+		&__copy {
+			padding: 0;
+
+			h2 {
+				margin: 0.8rem 0 1rem;
+				font-size: 2.15rem;
+			}
+
+			p {
+				font-size: 0.78rem;
+				line-height: 1.55;
+			}
+		}
+
+		&__lead {
+			font-size: 1rem !important;
+			line-height: 1.4 !important;
+		}
+
+		&__signature {
+			margin-top: 1rem;
+			font-size: 1.35rem;
+		}
+	}
+}

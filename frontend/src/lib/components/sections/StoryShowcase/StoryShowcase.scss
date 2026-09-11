@@ -1,0 +1,360 @@
+@use '@/styles/variables' as v;
+@use '@/styles/mixins' as m;
+
+.story-showcase {
+	position: relative;
+	padding: clamp(3.5rem, 6vh, 5rem) v.$page-gutter clamp(3rem, 5vh, 4.5rem);
+
+	&__heading {
+		max-width: 64rem;
+		display: block;
+		margin: 0 auto 2.5rem;
+
+		h2 {
+			@include m.editorial-heading(clamp(2.5rem, 4.4vw, 5rem), 1.03);
+
+			max-width: 56rem;
+		}
+	}
+
+	&__eyebrow {
+		@include m.uppercase-label;
+
+		display: block;
+		margin-bottom: 1.8rem;
+	}
+
+	&__slider {
+		overflow: hidden;
+	}
+
+	&__track {
+		display: flex;
+		transform: translate3d(calc(var(--active-slide) * -100%), 0, 0);
+		transition: transform 0.85s v.$ease-editorial;
+		will-change: transform;
+	}
+
+	&__slide {
+		flex: 0 0 100%;
+		min-width: 0;
+	}
+
+	&__gallery {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+		gap: clamp(1.25rem, 2.6vw, 2.8rem);
+		max-width: 64rem;
+		margin: 0 auto;
+		padding: clamp(1rem, 2vw, 1.8rem);
+		overflow: hidden;
+		background:
+			radial-gradient(circle at 100% 0%, rgba(224, 170, 120, 0.28), transparent 34%),
+			linear-gradient(135deg, #17312d, #28443d);
+		border-radius: 2rem;
+		box-shadow: 0 2rem 5rem rgba(34, 39, 30, 0.18);
+	}
+
+	&__stack {
+		display: grid;
+		gap: clamp(1rem, 1.6vw, 1.5rem);
+		align-content: center;
+	}
+
+	&__card {
+		position: relative;
+		aspect-ratio: 16 / 9;
+		margin: 0;
+		overflow: hidden;
+		background: #30423a;
+		border: 1px solid rgba(255, 247, 233, 0.42);
+		border-radius: 1.15rem;
+		box-shadow: 0 1.4rem 2.6rem rgba(6, 15, 12, 0.36);
+		transition:
+			transform 0.65s v.$ease-editorial,
+			box-shadow 0.65s ease;
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+			transition: transform 1.1s v.$ease-editorial;
+		}
+
+		figcaption {
+			position: absolute;
+			bottom: 0.9rem;
+			left: 0.9rem;
+			padding: 0.45rem 0.65rem;
+			color: #f8f1e4;
+			font-size: 0.62rem;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			background: rgba(20, 31, 27, 0.64);
+			border: 1px solid rgba(255, 247, 233, 0.28);
+			border-radius: 999px;
+			backdrop-filter: blur(10px);
+
+			span {
+				margin-right: 0.35rem;
+				color: #e9b982;
+			}
+		}
+
+		&:hover {
+			z-index: 1;
+			box-shadow: 0 2rem 3.5rem rgba(6, 15, 12, 0.48);
+
+			img {
+				transform: scale(1.05);
+			}
+		}
+
+		&--cover {
+			transform: rotate(-2.3deg) translateX(0.35rem);
+
+			&:hover {
+				transform: rotate(-0.5deg) translateY(-0.5rem);
+			}
+		}
+
+		&--finale {
+			transform: rotate(1.8deg) translateX(0.65rem);
+
+			&:hover {
+				transform: rotate(0.5deg) translateY(-0.5rem);
+			}
+		}
+
+		&--feature {
+			align-self: center;
+			transform: rotate(1deg);
+
+			&:hover {
+				transform: rotate(0) translateY(-0.5rem);
+			}
+		}
+	}
+
+	&__caption {
+		width: min(52%, 36rem);
+		margin: 1.1rem max(0px, calc((100% - 64rem) / 2)) 0 auto;
+		font-family: v.$font-serif;
+		font-size: 1.15rem;
+		line-height: 1.45;
+	}
+
+	&__controls {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 1.25rem;
+		max-width: 64rem;
+		margin: 0.85rem auto 0;
+	}
+
+	&__dots,
+	&__arrows {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+
+		button {
+			padding: 0;
+			color: inherit;
+			background: transparent;
+			border: 0;
+			cursor: pointer;
+		}
+	}
+
+	&__dots button {
+		width: 1.5rem;
+		height: 2px;
+		background: currentColor;
+		opacity: 0.25;
+		transition: width 0.4s v.$ease-editorial, opacity 0.3s ease;
+
+		&.active {
+			width: 3rem;
+			opacity: 1;
+		}
+	}
+
+	&__counter {
+		font-size: 0.68rem;
+		letter-spacing: 0.12em;
+	}
+
+	&__arrows button {
+		display: grid;
+		place-items: center;
+		width: 2.4rem;
+		aspect-ratio: 1;
+		font-size: 1rem;
+		border: 1px solid v.$line-dark;
+		border-radius: 50%;
+		transition: color 0.3s ease, background 0.3s ease;
+
+		&:hover {
+			color: v.$color-page;
+			background: v.$color-ink;
+		}
+	}
+
+	@include m.tablet {
+		padding: clamp(3.5rem, 6vh, 5rem) v.$page-gutter-mobile;
+
+		&__heading {
+			margin-bottom: 2rem;
+		}
+
+		&__slider {
+			height: calc(100svh - 20rem);
+			min-height: 15rem;
+			overflow-x: hidden;
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: none;
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
+		}
+
+		&__track {
+			display: grid;
+			gap: 4rem;
+			transform: none;
+		}
+
+		&__gallery {
+			display: flex;
+			gap: 1rem;
+			padding: 1rem;
+			overflow-x: auto;
+			scroll-snap-type: x mandatory;
+			scrollbar-width: none;
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
+		}
+
+		&__stack {
+			display: contents;
+		}
+
+		&__card {
+			flex: 0 0 76%;
+			scroll-snap-align: center;
+		}
+
+		&__caption {
+			width: min(78%, 38rem);
+			margin-right: auto;
+			margin-left: auto;
+		}
+
+		&__controls {
+			display: none;
+		}
+	}
+
+	@include m.mobile {
+		padding: 3rem v.$page-gutter-mobile 2.5rem;
+
+		&__heading {
+			margin-bottom: 1.4rem;
+		}
+
+		&__eyebrow {
+			margin-bottom: 1rem;
+			font-size: 0.68rem;
+		}
+
+		&__heading h2 {
+			font-size: 2.25rem;
+		}
+
+		&__card {
+			flex: 0 0 86%;
+
+			&--cover {
+				order: 1;
+			}
+
+			&--feature {
+				order: 2;
+			}
+
+			&--finale {
+				order: 3;
+			}
+		}
+
+		&__caption {
+			width: 90%;
+			margin-top: 1rem;
+			margin-right: auto;
+			margin-left: auto;
+			font-size: 0.95rem;
+		}
+	}
+
+	@media (min-width: 901px) and (max-height: 900px) {
+		padding-top: 3rem;
+		padding-bottom: 2.5rem;
+
+		&__heading {
+			margin-bottom: 1.5rem;
+
+			h2 {
+				font-size: clamp(2.5rem, 7vh, 3.8rem);
+			}
+		}
+
+		&__eyebrow {
+			margin-bottom: 1rem;
+		}
+
+		&__gallery {
+			max-width: 56rem;
+			padding: 0.9rem;
+		}
+
+		&__caption {
+			width: min(48%, 32rem);
+			margin-top: 0.85rem;
+			margin-right: max(0px, calc((100% - 56rem) / 2));
+			font-size: 0.98rem;
+		}
+
+		&__controls {
+			max-width: 56rem;
+		}
+	}
+
+	@media (min-width: 901px) and (max-height: 740px) {
+		padding-top: 2.25rem;
+		padding-bottom: 2rem;
+
+		&__heading h2 {
+			font-size: 2.8rem;
+		}
+
+		&__gallery {
+			max-width: 48rem;
+		}
+
+		&__caption {
+			margin-right: max(0px, calc((100% - 48rem) / 2));
+		}
+
+		&__controls {
+			max-width: 48rem;
+		}
+	}
+}

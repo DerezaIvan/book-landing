@@ -1,0 +1,104 @@
+@use '@/styles/variables' as v;
+@use '@/styles/mixins' as m;
+
+.site-header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: center;
+	width: 100%;
+	padding: 1.4rem 3vw;
+	color: v.$color-cream;
+	border-bottom: 1px solid rgba(white, 0.26);
+
+	&__brand {
+		display: flex;
+		gap: 0.8rem;
+		align-items: center;
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		cursor: pointer;
+	}
+
+	&__brand-mark {
+		display: grid;
+		place-items: center;
+		width: 2.1rem;
+		aspect-ratio: 1;
+		font-family: v.$font-serif;
+		font-size: 0.7rem;
+		border: 1px solid currentColor;
+		border-radius: 50%;
+	}
+
+	&__nav {
+		display: flex;
+		gap: 2rem;
+		font-size: 0.82rem;
+
+		a {
+			@include m.interactive-underline;
+		}
+	}
+
+	&__cta {
+		@include m.interactive-underline;
+
+		justify-self: end;
+		font-size: 0.82rem;
+
+		span {
+			margin-left: 0.4rem;
+		}
+	}
+
+	&__menu-button {
+		display: none;
+	}
+
+	@include m.tablet {
+		grid-template-columns: 1fr auto;
+		padding: 1.1rem v.$page-gutter-mobile;
+
+		&__cta {
+			display: none;
+		}
+
+		&__menu-button {
+			display: block;
+			color: inherit;
+			font-size: 0.7rem;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			background: transparent;
+			border: 0;
+			cursor: pointer;
+		}
+
+		&__nav {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			display: none;
+			flex-direction: column;
+			width: 100%;
+			padding: 2rem;
+			color: v.$color-ink;
+			background: v.$color-paper;
+		}
+
+		&--menu-open &__nav {
+			display: flex;
+		}
+	}
+
+	@include m.mobile {
+		&__brand {
+			font-size: 0.72rem;
+		}
+	}
+}

@@ -1,0 +1,69 @@
+@use '@/styles/variables' as v;
+@use '@/styles/mixins' as m;
+
+.manifesto {
+	padding: 11rem v.$page-gutter 13rem;
+
+	&__inner {
+		max-width: 78rem;
+		margin: 0 auto;
+	}
+
+	&__heading {
+		max-width: 68rem;
+		display: block;
+		margin-bottom: 2.5rem;
+	}
+
+	&__eyebrow {
+		@include m.uppercase-label;
+
+		display: block;
+		margin-bottom: 2rem;
+	}
+
+	&__lead {
+		@include m.editorial-heading(clamp(2.4rem, 4.8vw, 5.5rem), 1.1);
+		margin-bottom: 0;
+
+		span {
+			position: relative;
+			color: v.$color-berry;
+			font-style: italic;
+
+			&::after {
+				content: '';
+				position: absolute;
+				bottom: -0.08em;
+				left: 0;
+				width: 100%;
+				height: 0.08em;
+				background: v.$color-berry;
+				transform: scaleX(0);
+				transform-origin: left;
+				transition: transform 1s v.$ease-editorial 0.35s;
+			}
+		}
+	}
+
+	&__heading:global(.is-visible) &__lead span::after {
+		transform: scaleX(1);
+	}
+
+	&__detail {
+		max-width: 46rem;
+		font-size: clamp(1rem, 1.25vw, 1.25rem);
+		line-height: 1.75;
+		margin-top: 3.5rem;
+	}
+
+	@include m.tablet {
+		padding: 7rem v.$page-gutter-mobile 8rem;
+	}
+
+	@include m.mobile {
+		&__lead {
+			font-size: 2.25rem;
+		}
+	}
+}
