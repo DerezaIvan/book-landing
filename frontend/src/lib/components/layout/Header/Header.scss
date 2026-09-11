@@ -69,7 +69,11 @@
 		}
 
 		&__menu-button {
-			display: block;
+			display: grid;
+			place-items: center end;
+			min-width: 4.8rem;
+			min-height: 2rem;
+			padding: 0;
 			color: inherit;
 			font-size: 0.7rem;
 			letter-spacing: 0.14em;
@@ -79,20 +83,63 @@
 			cursor: pointer;
 		}
 
+		&__menu-label {
+			grid-area: 1 / 1;
+			transition:
+				opacity 0.28s ease,
+				transform 0.38s v.$ease-editorial;
+		}
+
+		&__menu-label--open {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		&__menu-label--close {
+			opacity: 0;
+			transform: translateY(0.55rem);
+		}
+
 		&__nav {
 			position: absolute;
 			top: 100%;
 			left: 0;
-			display: none;
+			display: flex;
 			flex-direction: column;
 			width: 100%;
 			padding: 2rem;
 			color: v.$color-ink;
 			background: v.$color-paper;
+			box-shadow: 0 1.5rem 3rem rgba(20, 18, 14, 0.12);
+			opacity: 0;
+			visibility: hidden;
+			clip-path: inset(0 0 100% 0);
+			transform: translateY(-0.65rem);
+			pointer-events: none;
+			transition:
+				opacity 0.3s ease,
+				transform 0.45s v.$ease-editorial,
+				clip-path 0.45s v.$ease-editorial,
+				visibility 0s linear 0.45s;
 		}
 
 		&--menu-open &__nav {
-			display: flex;
+			opacity: 1;
+			visibility: visible;
+			clip-path: inset(0 0 0 0);
+			transform: translateY(0);
+			pointer-events: auto;
+			transition-delay: 0s;
+		}
+
+		&--menu-open &__menu-label--open {
+			opacity: 0;
+			transform: translateY(-0.55rem);
+		}
+
+		&--menu-open &__menu-label--close {
+			opacity: 1;
+			transform: translateY(0);
 		}
 	}
 

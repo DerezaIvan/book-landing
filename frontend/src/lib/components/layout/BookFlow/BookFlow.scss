@@ -26,4 +26,22 @@
 		transition: opacity 0.18s ease-out;
 	}
 
+	@media (max-width: 1024px), (hover: none), (pointer: coarse) {
+		height: auto;
+		margin-top: 0;
+
+		&__anchor {
+			display: none;
+		}
+
+		&__stage {
+			position: relative;
+			top: auto;
+			height: auto;
+			overflow: visible;
+			perspective: none;
+			opacity: 1;
+			transition: none;
+		}
+	}
 }

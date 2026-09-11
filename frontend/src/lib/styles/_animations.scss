@@ -86,3 +86,16 @@
 		clip-path: none;
 	}
 }
+
+@media (max-width: 1024px), (hover: none), (pointer: coarse) {
+	[data-reveal] {
+		opacity: 1;
+		transform: none;
+		clip-path: none;
+		transition: none;
+	}
+
+	.hero__scroll-cue::before {
+		animation: none;
+	}
+}

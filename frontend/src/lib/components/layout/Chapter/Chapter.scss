@@ -81,4 +81,22 @@
 		}
 	}
 
+	@media (max-width: 1024px), (hover: none), (pointer: coarse) {
+		position: relative;
+		inset: auto;
+		height: auto;
+		transform: none;
+		will-change: auto;
+
+		&__sheet,
+		&__content {
+			height: auto;
+			overflow: visible;
+		}
+
+		&__sheet::after {
+			display: none;
+		}
+	}
+
 }

@@ -1,5 +1,9 @@
 export function reveal(node: HTMLElement) {
-	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+	if (
+		window.matchMedia(
+			'(prefers-reduced-motion: reduce), (max-width: 1024px), (hover: none), (pointer: coarse)'
+		).matches
+	) {
 		node.classList.add('is-visible');
 		return;
 	}

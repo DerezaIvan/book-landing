@@ -17,9 +17,11 @@
 		class="site-header__menu-button"
 		type="button"
 		aria-expanded={menuOpen}
+		aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
 		onclick={() => (menuOpen = !menuOpen)}
 	>
-		{menuOpen ? 'Закрыть' : 'Меню'}
+		<span class="site-header__menu-label site-header__menu-label--open" aria-hidden="true">Меню</span>
+		<span class="site-header__menu-label site-header__menu-label--close" aria-hidden="true">Закрыть</span>
 	</button>
 	<nav class="site-header__nav" aria-label="Основная навигация">
 		<a href="#approach" onclick={(event) => navigateToPage(event, 2)}>Как мы создаём</a>

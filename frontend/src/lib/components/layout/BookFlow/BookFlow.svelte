@@ -14,9 +14,16 @@
 		if (!flow) return;
 		const flowElement = flow;
 		const chapters = Array.from(flowElement.querySelectorAll<HTMLElement>('[data-book-page]'));
+		const staticFlow = window.matchMedia(
+			'(max-width: 1024px), (hover: none), (pointer: coarse)'
+		).matches;
 
 		const navigateToIndex = (index: number) => {
 			const pageIndex = Math.min(pages - 1, Math.max(0, index));
+			if (staticFlow) {
+				chapters[pageIndex]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				return;
+			}
 			const flowTop = flowElement.getBoundingClientRect().top + window.scrollY;
 			const target = flowTop + pageIndex * window.innerHeight * 1.8;
 
@@ -36,8 +43,12 @@
 		window.addEventListener('hashchange', navigateToHash);
 		const hashFrame = window.requestAnimationFrame(navigateToHash);
 
-		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		if (staticFlow || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			flowElement.style.setProperty('--book-flow-reveal', '1');
+			chapters.forEach((chapter) => {
+				chapter.style.setProperty('--page-turn', '0');
+				chapter.style.pointerEvents = 'auto';
+			});
 			return () => {
 				window.removeEventListener('bookflow:navigate', navigateToPage);
 				window.removeEventListener('hashchange', navigateToHash);
