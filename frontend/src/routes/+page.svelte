@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import Footer from '@/components/layout/Footer/Footer.svelte';
 	import Header from '@/components/layout/Header/Header.svelte';
 	import Chapter from '@/components/layout/Chapter/Chapter.svelte';
@@ -20,7 +21,7 @@
 	/>
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 	<link rel="canonical" href="https://derezaivan.github.io/book-landing/" />
-	<link rel="manifest" href="/book-landing/site.webmanifest" />
+	<link rel="manifest" href={`${base}/site.webmanifest`} />
 	<meta name="theme-color" content="#273129" />
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="ru_RU" />
