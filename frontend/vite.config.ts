@@ -5,7 +5,8 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 
 const libPath = fileURLToPath(new URL('./src/lib', import.meta.url));
-const base = process.env.BASE_PATH ?? '';
+const configuredBase = (process.env.BASE_PATH ?? '').replace(/^\/+|\/+$/g, '');
+const base = configuredBase ? (`/${configuredBase}` as `/${string}`) : '';
 
 export default defineConfig({
 	resolve: {
@@ -19,7 +20,7 @@ export default defineConfig({
 		}
 	},
 	plugins: [
-			sveltekit({
+		sveltekit({
 			preprocess: vitePreprocess(),
 			alias: {
 				'@': libPath

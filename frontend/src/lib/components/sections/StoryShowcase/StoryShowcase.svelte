@@ -3,101 +3,51 @@
 	import { reveal } from '@/actions/reveal';
 
 	let activeSlide = $state(0);
+	let direction = $state<'next' | 'previous'>('next');
+	let pointerStart = $state<number | null>(null);
 	let lightboxImage = $state<{ src: string; alt: string } | null>(null);
 
-	const examples = [
+	const scenes = [
 		{
-			id: 'story-01',
-			caption:
-				'«Миша и звёздный мяч» - один из примеров. Герои, сюжет и иллюстрации каждой книги создаются вокруг вашего ребёнка и его интересов.',
-			cards: [
-				{
-					position: 'cover',
-					src: `${base}/images/misha-star-ball-cover.jpg`,
-					alt: 'Обложка книги «Миша и звёздный мяч»',
-					number: '01',
-					label: 'Обложка'
-				},
-				{
-					position: 'finale',
-					src: `${base}/images/misha-star-ball-finale.jpg`,
-					alt: 'Миша и Зайчик Топ прощаются на закате',
-					number: '04',
-					label: 'Финал истории'
-				},
-				{
-					position: 'feature',
-					src: `${base}/images/misha-star-ball-discovery.jpg`,
-					alt: 'Миша и Зайчик Топ находят мяч с жёлтой звездой',
-					number: '02',
-					label: 'Начало приключения'
-				}
-			]
+			src: `${base}/images/misha-star-ball-cover.jpg`,
+			alt: 'Миша и Зайчик Топ на обложке книги «Миша и звёздный мяч»',
+			label: 'Обложка',
+			text: 'Знакомство с героем и миром, в который захочется возвращаться.'
 		},
 		{
-			id: 'story-02',
-			caption:
-				'Каждая история получает собственный визуальный ритм: от первого знакомства с героем до тёплого финала, который хочется перечитывать вместе.',
-			cards: [
-				{
-					position: 'cover',
-					src: `${base}/images/misha-star-ball-discovery.jpg`,
-					alt: 'Пример сюжетного разворота персональной книги',
-					number: '01',
-					label: 'Завязка'
-				},
-				{
-					position: 'finale',
-					src: `${base}/images/misha-star-ball-cover.jpg`,
-					alt: 'Пример оформления персональной книги',
-					number: '02',
-					label: 'Герои'
-				},
-				{
-					position: 'feature',
-					src: `${base}/images/misha-star-ball-finale.jpg`,
-					alt: 'Пример финального разворота персональной книги',
-					number: '03',
-					label: 'Развязка'
-				}
-			]
+			src: `${base}/images/misha-star-ball-discovery.jpg`,
+			alt: 'Миша и Зайчик Топ находят мяч с жёлтой звездой',
+			label: 'Приключение',
+			text: 'Любимый интерес ребёнка становится частью сюжета и отправной точкой приключения.'
 		},
 		{
-			id: 'story-03',
-			caption:
-				'Это временный пример наполнения галереи. Позже каждый такой слайд можно заменить отдельной готовой книгой без изменения композиции секции.',
-			cards: [
-				{
-					position: 'cover',
-					src: `${base}/images/misha-star-ball-finale.jpg`,
-					alt: 'Пример атмосферы персональной истории',
-					number: '01',
-					label: 'Атмосфера'
-				},
-				{
-					position: 'finale',
-					src: `${base}/images/misha-star-ball-discovery.jpg`,
-					alt: 'Пример приключения в персональной книге',
-					number: '02',
-					label: 'Приключение'
-				},
-				{
-					position: 'feature',
-					src: `${base}/images/misha-star-ball-cover.jpg`,
-					alt: 'Пример главной иллюстрации персональной книги',
-					number: '03',
-					label: 'Главный герой'
-				}
-			]
+			src: `${base}/images/misha-star-ball-finale.jpg`,
+			alt: 'Миша и Зайчик Топ прощаются на закате',
+			label: 'Финал истории',
+			text: 'Тёплая последняя страница, которую можно перечитывать вместе.'
 		}
 	];
 
 	function showSlide(index: number) {
-		activeSlide = (index + examples.length) % examples.length;
+		if (index === activeSlide) return;
+		direction =
+			index > activeSlide || (activeSlide === scenes.length - 1 && index === 0)
+				? 'next'
+				: 'previous';
+		activeSlide = (index + scenes.length) % scenes.length;
 	}
 
-	function openLightbox(image: { src: string; alt: string }) {
-		lightboxImage = image;
+	function handlePointerDown(event: PointerEvent) {
+		if (event.pointerType === 'mouse') return;
+		pointerStart = event.clientX;
+	}
+
+	function handlePointerUp(event: PointerEvent) {
+		if (pointerStart === null) return;
+		const distance = event.clientX - pointerStart;
+		pointerStart = null;
+		if (Math.abs(distance) < 44) return;
+		showSlide(activeSlide + (distance < 0 ? 1 : -1));
 	}
 
 	function closeLightbox() {
@@ -112,7 +62,6 @@
 		if (!lightboxImage) return;
 		const previousOverflow = document.body.style.overflow;
 		document.body.style.overflow = 'hidden';
-
 		return () => {
 			document.body.style.overflow = previousOverflow;
 		};
@@ -123,75 +72,92 @@
 
 <section class="story-showcase" aria-labelledby="story-showcase-title">
 	<header class="story-showcase__heading" data-reveal="words" use:reveal>
-		<span class="story-showcase__eyebrow">Пример персональной истории</span>
-		<h2 id="story-showcase-title">Один разворот - и история оживает</h2>
-	</header>
-	<div class="story-showcase__slider">
-		<div class="story-showcase__track" style={`--active-slide:${activeSlide}`}>
-			{#each examples as example, slideIndex (example.id)}
-				<article class="story-showcase__slide" aria-label={`Пример ${slideIndex + 1} из ${examples.length}`}>
-					<div class="story-showcase__gallery">
-						<div class="story-showcase__stack">
-							{#each example.cards.slice(0, 2) as card (card.position)}
-								<figure class="story-showcase__card story-showcase__card--{card.position}">
-									<button
-										class="story-showcase__image-button"
-										type="button"
-										onclick={() => openLightbox(card)}
-										aria-label={`Открыть изображение: ${card.alt}`}
-									>
-										<img src={card.src} alt={card.alt} width="1400" height="788" loading="lazy" />
-									</button>
-									<figcaption><span>{card.number}</span> {card.label}</figcaption>
-								</figure>
-							{/each}
-						</div>
-						<figure class="story-showcase__card story-showcase__card--feature">
-							<button
-								class="story-showcase__image-button"
-								type="button"
-								onclick={() => openLightbox(example.cards[2])}
-								aria-label={`Открыть изображение: ${example.cards[2].alt}`}
-							>
-								<img
-									src={example.cards[2].src}
-									alt={example.cards[2].alt}
-									width="1400"
-									height="788"
-									loading="lazy"
-								/>
-							</button>
-							<figcaption><span>{example.cards[2].number}</span> {example.cards[2].label}</figcaption>
-						</figure>
-					</div>
-					<p class="story-showcase__caption">{example.caption}</p>
-				</article>
-			{/each}
+		<div>
+			<span class="story-showcase__eyebrow">Загляните внутрь</span>
+			<h2 id="story-showcase-title">Три страницы одной истории</h2>
 		</div>
+		<p>
+			Книга создаётся вокруг ребёнка — от первой встречи с героем до финала, который хочется
+			перечитывать.
+		</p>
+	</header>
 
-		<div class="story-showcase__controls">
-			<div class="story-showcase__dots" aria-label="Выбор примера">
-				{#each examples as example, index (example.id)}
-					<button
-						type="button"
-						class:active={activeSlide === index}
-						onclick={() => showSlide(index)}
-						aria-label={`Показать пример ${index + 1}`}
-						aria-current={activeSlide === index ? 'true' : undefined}
-					></button>
-				{/each}
-			</div>
-			<span class="story-showcase__counter">0{activeSlide + 1} / 0{examples.length}</span>
-			<div class="story-showcase__arrows">
-				<button type="button" onclick={() => showSlide(activeSlide - 1)} aria-label="Предыдущий пример">←</button>
-				<button type="button" onclick={() => showSlide(activeSlide + 1)} aria-label="Следующий пример">→</button>
-			</div>
+	<div class="story-showcase__reader">
+		{#key activeSlide}
+			<article
+				class="story-showcase__spread story-showcase__spread--{direction}"
+				aria-label={`${scenes[activeSlide].label}, страница ${activeSlide + 1} из ${scenes.length}`}
+			>
+				<button
+					class="story-showcase__image-button"
+					type="button"
+					onclick={() => (lightboxImage = scenes[activeSlide])}
+					onpointerdown={handlePointerDown}
+					onpointerup={handlePointerUp}
+					onpointercancel={() => (pointerStart = null)}
+					aria-label={`Увеличить иллюстрацию: ${scenes[activeSlide].alt}`}
+				>
+					<img
+						src={scenes[activeSlide].src}
+						alt={scenes[activeSlide].alt}
+						width="1400"
+						height="788"
+					/>
+					<span class="story-showcase__zoom" aria-hidden="true">Увеличить ↗</span>
+				</button>
+				<div class="story-showcase__copy" aria-live="polite" aria-atomic="true">
+					<span class="story-showcase__page-number"
+						>0{activeSlide + 1} <i>/ 0{scenes.length}</i></span
+					>
+					<span class="story-showcase__scene-label">{scenes[activeSlide].label}</span>
+					<p>{scenes[activeSlide].text}</p>
+				</div>
+			</article>
+		{/key}
+
+		<div class="story-showcase__controls" role="group" aria-label="Управление просмотром истории">
+			<button
+				class="story-showcase__arrow"
+				type="button"
+				onclick={() => showSlide(activeSlide - 1)}
+				aria-label="Предыдущая страница">←</button
+			>
+			<span class="story-showcase__current" aria-live="polite"
+				>0{activeSlide + 1} / 0{scenes.length}</span
+			>
+			<button
+				class="story-showcase__arrow"
+				type="button"
+				onclick={() => showSlide(activeSlide + 1)}
+				aria-label="Следующая страница">→</button
+			>
+			<span class="story-showcase__hint">Листайте или нажимайте на стрелки</span>
+		</div>
+		<div class="story-showcase__progress" role="group" aria-label="Выбрать страницу">
+			{#each scenes as scene, index (scene.label)}
+				<button
+					type="button"
+					class:active={activeSlide === index}
+					onclick={() => showSlide(index)}
+					aria-label={`Открыть страницу ${index + 1}: ${scene.label}`}
+					aria-current={activeSlide === index ? 'step' : undefined}
+				>
+					<img src={scene.src} alt="" width="280" height="152" loading="lazy" />
+					<span class="story-showcase__scene-number">0{index + 1}</span>
+					<strong>{scene.label}</strong>
+				</button>
+			{/each}
 		</div>
 	</div>
 </section>
 
 {#if lightboxImage}
-	<div class="story-showcase__lightbox" role="dialog" aria-modal="true" aria-label="Просмотр иллюстрации">
+	<div
+		class="story-showcase__lightbox"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Просмотр иллюстрации"
+	>
 		<button
 			class="story-showcase__lightbox-backdrop"
 			type="button"

@@ -1,10 +1,8 @@
 <script lang="ts">
 	let menuOpen = $state(false);
 
-	function navigateToPage(event: MouseEvent, index: number) {
-		event.preventDefault();
+	function closeMenu() {
 		menuOpen = false;
-		window.dispatchEvent(new CustomEvent('bookflow:navigate', { detail: { index } }));
 	}
 </script>
 
@@ -20,15 +18,19 @@
 		aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
 		onclick={() => (menuOpen = !menuOpen)}
 	>
-		<span class="site-header__menu-label site-header__menu-label--open" aria-hidden="true">Меню</span>
-		<span class="site-header__menu-label site-header__menu-label--close" aria-hidden="true">Закрыть</span>
+		<span class="site-header__menu-label site-header__menu-label--open" aria-hidden="true"
+			>Меню</span
+		>
+		<span class="site-header__menu-label site-header__menu-label--close" aria-hidden="true"
+			>Закрыть</span
+		>
 	</button>
 	<nav class="site-header__nav" aria-label="Основная навигация">
-		<a href="#approach" onclick={(event) => navigateToPage(event, 2)}>Как мы создаём</a>
-		<a href="#stories" onclick={(event) => navigateToPage(event, 0)}>Истории</a>
-		<a href="#studio" onclick={(event) => navigateToPage(event, 4)}>О студии</a>
+		<a href="#approach" onclick={closeMenu}>Как мы создаём</a>
+		<a href="#stories" onclick={closeMenu}>Истории</a>
+		<a href="#studio" onclick={closeMenu}>О студии</a>
 	</nav>
-	<a class="site-header__cta" href="#contact" onclick={(event) => navigateToPage(event, 5)}>
+	<a class="site-header__cta" href="#contact" onclick={closeMenu}>
 		Обсудить книгу <span>↗</span>
 	</a>
 </header>

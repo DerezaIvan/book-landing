@@ -1,30 +1,34 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
-	import type { Snippet } from 'svelte';
-
-	type Props = {
-		children?: Snippet;
-	};
-
-	let { children }: Props = $props();
 
 	let hero = $state<HTMLElement>();
 	let progress = $state(0);
+	let staticPresentation = $state(false);
 	let pointerX = $state(0);
 	let pointerY = $state(0);
-	let openProgress = $derived(Math.min(1, Math.max(0, (progress - 0.12) / 0.72)));
+	let openProgress = $derived(smoothstep(Math.min(1, Math.max(0, (progress - 0.12) / 0.72))));
 	let spreadProgress = $derived(Math.min(1, Math.max(0, (openProgress - 0.28) / 0.48)));
 	let leftPageProgress = $derived(Math.min(1, Math.max(0, (openProgress - 0.78) / 0.14)));
 	let coverOpacity = $derived(Math.min(1, Math.max(0, (0.86 - openProgress) / 0.14)));
 	let coverAngle = $derived(openProgress * -108);
-	let stageX = $derived(-50 - (1 - openProgress) * 25);
-	let stageTop = $derived(80 - openProgress * 18);
-	let titleOpacity = $derived(Math.max(0, 1 - progress * 2.1));
-	let diveProgress = $derived(Math.min(1, Math.max(0, (openProgress - 0.7) / 0.3)));
-	let revealProgress = $derived(Math.min(1, Math.max(0, (diveProgress - 0.16) / 0.84)));
+	let stageX = $derived(-50 - (1 - openProgress) * 16);
+	let stageTop = $derived(73 - openProgress * 1.5);
+	let titleOpacity = $derived(
+		staticPresentation ? 1 : 1 - smoothstep(Math.min(1, Math.max(0, (progress - 0.28) / 0.3)))
+	);
+
+	function smoothstep(value: number) {
+		return value * value * (3 - 2 * value);
+	}
 
 	onMount(() => {
-		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		if (
+			window.matchMedia(
+				'(prefers-reduced-motion: reduce), (max-width: 1024px), (hover: none), (pointer: coarse)'
+			).matches
+		) {
+			staticPresentation = true;
 			progress = 1;
 			return;
 		}
@@ -62,13 +66,8 @@
 <section class="hero" bind:this={hero} onpointermove={trackPointer} aria-labelledby="hero-title">
 	<div
 		class="hero__sticky"
-		style={`--progress:${progress}; --open:${openProgress}; --spread:${spreadProgress}; --left-page:${leftPageProgress}; --cover-opacity:${coverOpacity}; --cover-angle:${coverAngle}deg; --stage-x:${stageX}%; --stage-top:${stageTop}%; --title-opacity:${titleOpacity}; --dive:${diveProgress}; --reveal:${revealProgress}; --tilt-x:${pointerY * -2}deg; --tilt-y:${pointerX * 3}deg;`}
+		style={`--progress:${progress}; --open:${openProgress}; --spread:${spreadProgress}; --left-page:${leftPageProgress}; --cover-opacity:${coverOpacity}; --cover-angle:${coverAngle}deg; --stage-x:${stageX}%; --stage-top:${stageTop}%; --title-opacity:${titleOpacity}; --intro-opacity:${staticPresentation ? 1 : 1 - progress}; --tilt-x:${pointerY * -1.4}deg; --tilt-y:${pointerX * 2}deg;`}
 	>
-		{#if children}
-			<div class="hero__reveal">
-				{@render children()}
-			</div>
-		{/if}
 		<div class="hero__kicker">Семейная студия персональных книг</div>
 		<h1 class="hero__title" id="hero-title">
 			<span>Истории, в которых</span>
@@ -76,22 +75,26 @@
 			<span>становится главным героем</span>
 		</h1>
 
-		<div class="book__stage" aria-label="Макет персональной книги, раскрывающийся при прокрутке">
+		<div class="book__stage" aria-hidden="true">
 			<div class="book">
 				<div class="book__shadow"></div>
 				<div class="book__block" aria-hidden="true"></div>
 				<div class="book__spread">
+					<img
+						class="book__artwork"
+						src={`${base}/images/mock-story-garden.png`}
+						alt=""
+						width="1536"
+						height="1024"
+					/>
 					<div class="book__page book__page--left">
-						<span class="book__folio">Почему это важно</span>
-						<p class="book__preview-lead">
-							Ребёнок узнаёт себя <em>на каждой странице.</em>
-						</p>
+						<span class="book__folio">Dereza Stories · глава 01</span>
 					</div>
 					<div class="book__page book__page--right">
-						<span class="book__folio">Dereza Stories · 02</span>
+						<span class="book__folio">Тайный сад</span>
 						<p>
-							В характере героя, знакомых семейных деталях и маленьких победах. Так появляется
-							книга, к которой хочется возвращаться вместе - сегодня и много лет спустя.
+							Знакомый мир становится началом большого приключения, когда главным героем становится
+							ваш ребёнок.
 						</p>
 					</div>
 				</div>
@@ -104,7 +107,8 @@
 		</div>
 
 		<div class="hero__note">Создаём вместе с вами<br />и бережно относимся к каждой детали</div>
-		<div class="hero__scroll-cue"><span></span> Потяните вниз - книга откроется</div>
+		<a class="hero__cta" href="#contact">Обсудить книгу <span aria-hidden="true">↗</span></a>
+		<div class="hero__scroll-cue"><span></span> Листайте — книга откроется</div>
 	</div>
 </section>
 

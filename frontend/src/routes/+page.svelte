@@ -77,16 +77,13 @@
 	<Header />
 	<main id="top">
 		<Hero />
-		<BookFlow
-			pages={6}
-			anchors={['stories', 'story-showcase', 'approach', 'formats', 'studio', 'contact']}
-		>
-			<Chapter index="02" tone="milk"><Manifesto /></Chapter>
-			<Chapter index="03" tone="milk"><StoryShowcase /></Chapter>
-			<Chapter index="04" tone="forest"><Process /></Chapter>
-			<Chapter index="05" tone="paper"><Formats /></Chapter>
-			<Chapter index="06" tone="paper"><Studio /></Chapter>
-			<Chapter index="07" tone="night"><Contact /></Chapter>
+		<BookFlow>
+			<Chapter id="stories" index="02" tone="milk"><Manifesto /></Chapter>
+			<Chapter id="story-showcase" index="03" tone="milk"><StoryShowcase /></Chapter>
+			<Chapter id="approach" index="04" tone="forest"><Process /></Chapter>
+			<Chapter id="formats" index="05" tone="paper"><Formats /></Chapter>
+			<Chapter id="studio" index="06" tone="paper"><Studio /></Chapter>
+			<Chapter id="contact" index="07" tone="night"><Contact /></Chapter>
 		</BookFlow>
 	</main>
 	<Footer />

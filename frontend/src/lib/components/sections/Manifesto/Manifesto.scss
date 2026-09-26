@@ -2,17 +2,21 @@
 @use '@/styles/mixins' as m;
 
 .manifesto {
-	padding: 11rem v.$page-gutter 13rem;
+	padding: clamp(6rem, 11vw, 10rem) v.$page-gutter;
+	background:
+		radial-gradient(ellipse at 88% 18%, rgba(v.$color-apricot, 0.13), transparent 36%),
+		v.$color-milk;
 
 	&__inner {
-		max-width: 78rem;
+		max-width: 84rem;
 		margin: 0 auto;
 	}
 
-	&__heading {
-		max-width: 68rem;
-		display: block;
-		margin-bottom: 2.5rem;
+	&__story {
+		display: grid;
+		grid-template-columns: minmax(0, 0.9fr) minmax(25rem, 1.1fr);
+		gap: clamp(3rem, 8vw, 8rem);
+		align-items: center;
 	}
 
 	&__eyebrow {
@@ -20,11 +24,13 @@
 
 		display: block;
 		margin-bottom: 2rem;
+		color: v.$color-berry;
 	}
 
 	&__lead {
-		@include m.editorial-heading(clamp(2.4rem, 4.8vw, 5.5rem), 1.1);
-		margin-bottom: 0;
+		@include m.editorial-heading(clamp(2.6rem, 5.1vw, 5.8rem), 1.05);
+
+		margin: 0;
 
 		span {
 			position: relative;
@@ -32,38 +38,308 @@
 			font-style: italic;
 
 			&::after {
-				content: '';
 				position: absolute;
+				right: 0;
 				bottom: -0.08em;
 				left: 0;
-				width: 100%;
-				height: 0.08em;
-				background: v.$color-berry;
+				height: 0.055em;
+				background: currentColor;
+				content: '';
 				transform: scaleX(0);
 				transform-origin: left;
-				transition: transform 1s v.$ease-editorial 0.35s;
+				transition: transform 0.9s v.$ease-editorial 0.3s;
 			}
 		}
 	}
 
-	&__heading:global(.is-visible) &__lead span::after {
+	&__copy:global(.is-visible) &__lead span::after {
 		transform: scaleX(1);
 	}
 
 	&__detail {
-		max-width: 46rem;
-		font-size: clamp(1rem, 1.25vw, 1.25rem);
+		max-width: 35rem;
+		margin: 2rem 0 0;
+		font-size: clamp(1rem, 1.2vw, 1.2rem);
 		line-height: 1.75;
-		margin-top: 3.5rem;
+	}
+
+	&__link {
+		display: inline-flex;
+		gap: 1.25rem;
+		align-items: center;
+		margin-top: 2.25rem;
+		padding: 0.85rem 0;
+		color: v.$color-ink;
+		font-size: 0.88rem;
+		text-decoration: none;
+		border-bottom: 1px solid rgba(v.$color-ink, 0.35);
+		transition:
+			gap 0.3s v.$ease-editorial,
+			color 0.3s ease;
+
+		&:hover,
+		&:focus-visible {
+			gap: 1.7rem;
+			color: v.$color-berry;
+		}
+
+		&:focus-visible {
+			outline: 2px solid v.$color-berry;
+			outline-offset: 4px;
+		}
+	}
+
+	&__preview {
+		min-width: 0;
+		padding: 0.65rem;
+		background: #fffaf0;
+		border: 1px solid rgba(v.$color-ink, 0.12);
+		border-radius: 1.35rem;
+		box-shadow: 0 2rem 4.5rem rgba(54, 43, 29, 0.12);
+	}
+
+	&__preview-image {
+		position: relative;
+		aspect-ratio: 1.48;
+		overflow: hidden;
+		color: #fffaf0;
+		background: v.$color-forest;
+		border-radius: 0.95rem;
+
+		> img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			animation: manifesto-scene-in 0.65s v.$ease-editorial both;
+		}
+
+		&::after {
+			position: absolute;
+			inset: 35% 0 0;
+			background: linear-gradient(transparent, rgba(17, 25, 20, 0.84));
+			content: '';
+			pointer-events: none;
+		}
+	}
+
+	&__preview-cover {
+		position: absolute;
+		z-index: 1;
+		right: clamp(1.25rem, 3vw, 2.5rem);
+		bottom: clamp(1.25rem, 3vw, 2.5rem);
+		left: clamp(1.25rem, 3vw, 2.5rem);
+		max-width: 31rem;
+		pointer-events: none;
+
+		span {
+			@include m.uppercase-label(0.61rem, 0.16em);
+
+			color: rgba(255, 250, 240, 0.78);
+		}
+
+		strong {
+			display: block;
+			margin-top: 0.7rem;
+			font-family: v.$font-serif;
+			font-size: clamp(1.7rem, 3.4vw, 3.35rem);
+			font-weight: 400;
+			line-height: 1.04;
+		}
+
+		p {
+			max-width: 26rem;
+			margin: 0.8rem 0 0;
+			font-size: clamp(0.82rem, 1.05vw, 1rem);
+			line-height: 1.5;
+		}
+	}
+
+	&__preview-index {
+		position: absolute;
+		z-index: 1;
+		top: 1.15rem;
+		left: 1.25rem;
+		font-size: 0.66rem;
+		letter-spacing: 0.13em;
+		color: rgba(255, 250, 240, 0.88);
+	}
+
+	&__preview-controls {
+		display: grid;
+		grid-template-columns: minmax(10rem, 1fr) auto;
+		gap: 1rem;
+		align-items: end;
+		padding: 1.1rem 0.65rem 0.35rem;
+	}
+
+	&__name-field {
+		display: grid;
+		gap: 0.45rem;
+
+		span {
+			font-size: 0.66rem;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			opacity: 0.64;
+		}
+
+		input {
+			width: 100%;
+			min-height: 2.75rem;
+			padding: 0.65rem 0.8rem;
+			color: v.$color-ink;
+			font: inherit;
+			font-size: 0.88rem;
+			background: transparent;
+			border: 1px solid rgba(v.$color-ink, 0.2);
+			border-radius: 0.55rem;
+			transition:
+				border-color 0.2s ease,
+				box-shadow 0.2s ease;
+
+			&:focus-visible {
+				border-color: v.$color-berry;
+				outline: none;
+				box-shadow: 0 0 0 3px rgba(v.$color-berry, 0.15);
+			}
+		}
+	}
+
+	&__scene-picker {
+		display: flex;
+		gap: 0.35rem;
+		padding: 0.25rem;
+		background: rgba(v.$color-ink, 0.06);
+		border-radius: 0.7rem;
+
+		button {
+			min-height: 2.25rem;
+			padding: 0.5rem 0.7rem;
+			color: v.$color-ink;
+			font: inherit;
+			font-size: 0.72rem;
+			background: transparent;
+			border: 0;
+			border-radius: 0.5rem;
+			cursor: pointer;
+			transition:
+				color 0.22s ease,
+				background 0.22s ease,
+				box-shadow 0.22s ease;
+
+			&.active {
+				background: #fff;
+				box-shadow: 0 0.15rem 0.5rem rgba(v.$color-ink, 0.1);
+			}
+
+			&:focus-visible {
+				outline: 2px solid v.$color-berry;
+				outline-offset: 2px;
+			}
+		}
+	}
+
+	&__preview-note {
+		margin: 0.8rem 0.8rem 0.55rem;
+		color: rgba(v.$color-ink, 0.62);
+		font-size: 0.7rem;
+		line-height: 1.5;
+	}
+
+	@media (max-width: 1100px) {
+		&__story {
+			grid-template-columns: minmax(0, 0.8fr) minmax(22rem, 1.2fr);
+			gap: 3.5rem;
+		}
+
+		&__preview-controls {
+			grid-template-columns: 1fr;
+		}
+
+		&__scene-picker {
+			justify-content: stretch;
+
+			button {
+				flex: 1;
+			}
+		}
 	}
 
 	@include m.tablet {
-		padding: 7rem v.$page-gutter-mobile 8rem;
+		padding: 6rem v.$page-gutter-mobile;
+
+		&__story {
+			grid-template-columns: 1fr;
+			gap: 3rem;
+		}
+
+		&__copy {
+			max-width: 44rem;
+		}
+
+		&__preview {
+			width: min(100%, 44rem);
+			margin: 0 auto;
+		}
 	}
 
 	@include m.mobile {
+		padding-top: 4.5rem;
+		padding-bottom: 4.5rem;
+
 		&__lead {
-			font-size: 2.25rem;
+			font-size: 2.45rem;
 		}
+
+		&__eyebrow {
+			margin-bottom: 1.2rem;
+		}
+
+		&__preview-image {
+			aspect-ratio: 1.13;
+		}
+
+		&__preview-cover {
+			right: 1.1rem;
+			bottom: 1.1rem;
+			left: 1.1rem;
+
+			strong {
+				font-size: 2rem;
+			}
+		}
+
+		&__preview-controls {
+			padding: 1rem 0.4rem 0.25rem;
+		}
+
+		&__preview-note {
+			margin-right: 0.4rem;
+			margin-left: 0.4rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		&__preview-image > img {
+			animation: none;
+		}
+
+		&__link,
+		&__name-field input,
+		&__scene-picker button {
+			transition: none;
+		}
+	}
+}
+
+@keyframes manifesto-scene-in {
+	from {
+		opacity: 0.68;
+		transform: scale(1.025);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
 	}
 }

@@ -12,224 +12,117 @@
 		@include m.uppercase-label;
 
 		display: block;
-		margin-bottom: 3rem;
+		margin-bottom: 2rem;
 	}
 
 	&__title h2 {
 		@include m.editorial-heading(clamp(2.6rem, 4.6vw, 5.2rem));
 	}
 
-	&__showcase {
+	&__showcase,
+	&__stack {
 		min-width: 0;
 	}
 
 	&__stack {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 1.5rem;
-		padding-top: 15px;
-	}
-
-	&__hint {
-		display: flex;
-		gap: 0.65rem;
-		align-items: center;
-		justify-content: center;
-		margin: 0 0 1.75rem;
-		font-size: 0.68rem;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		opacity: 0.58;
-		white-space: nowrap;
-
-		&::before,
-		&::after {
-			content: '';
-			width: clamp(1.5rem, 3vw, 3rem);
-			height: 1px;
-			background: currentColor;
-			opacity: 0.45;
-		}
-
-		i {
-			font-size: 0.9rem;
-			font-style: normal;
-			animation: formats-hint 1.6s ease-in-out infinite;
-		}
-	}
-
-	&__hint-touch {
-		display: none;
+		gap: clamp(1rem, 2vw, 1.6rem);
 	}
 
 	&__card {
-		position: relative;
-		width: 100%;
-		min-height: clamp(22rem, 55vh, 30rem);
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
 		overflow: hidden;
-		border: 0;
-		outline: none;
-		cursor: pointer;
-		box-shadow: 0 2rem 5rem rgba(58, 42, 26, 0.16);
+		background: #fffaf0;
+		border: 1px solid rgba(48, 54, 45, 0.12);
+		border-radius: 1.2rem;
+		box-shadow: 0 1.4rem 3rem rgba(58, 42, 26, 0.12);
 		transition:
-			transform 0.55s v.$ease-editorial,
-			box-shadow 0.55s ease;
+			transform 0.45s v.$ease-editorial,
+			box-shadow 0.45s ease;
 
-		&::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 1.1rem;
-			width: 1px;
-			height: 100%;
-			background: currentColor;
-			opacity: 0.18;
-			z-index: 3;
-			transition: opacity 0.35s ease;
+		&:hover {
+			box-shadow: 0 1.8rem 3.5rem rgba(58, 42, 26, 0.19);
+			transform: translateY(-0.35rem);
 		}
 
-		&:hover,
-		&:focus {
-			box-shadow: 0 2.8rem 6rem rgba(58, 42, 26, 0.24);
-			transform: rotate(0) translateY(-0.7rem) scale(1.015);
-
-			&::before {
-				opacity: 0;
-			}
-
-			.formats__media {
-				opacity: 1;
-				clip-path: inset(0);
-
-				img {
-					transform: scale(1);
-				}
-			}
-
-			.formats__media-caption {
-				opacity: 1;
-				transform: translateY(0);
-				transition-delay: 0.38s;
-			}
-
-			.formats__content {
-				opacity: 0;
-				transform: translateY(-1.25rem);
-			}
-		}
-
-		&--print {
-			color: v.$color-page;
+		&--print .formats__media {
 			background: #30362d;
-			transform: rotate(-1.5deg) translateY(1.5rem);
-
-			.formats__media {
-				clip-path: inset(0 0 100% 0);
-			}
 		}
 
-		&--digital {
-			color: v.$color-ink;
+		&--digital .formats__media {
 			background: #dca979;
-			transform: rotate(1.5deg) translateY(-1.5rem);
-
-			.formats__media {
-				clip-path: inset(0 100% 0 0);
-				background: #171914;
-
-				img {
-					object-fit: contain;
-					padding: 1.2rem;
-				}
-			}
 		}
 	}
 
-	&__content {
+	&__media {
 		position: relative;
-		z-index: 2;
+		display: grid;
+		place-items: center;
+		width: 100%;
+		aspect-ratio: 1.25;
+		overflow: hidden;
+
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 45% 0 0;
+			background: linear-gradient(transparent, rgba(20, 17, 13, 0.4));
+			pointer-events: none;
+		}
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: transform 0.8s v.$ease-editorial;
+		}
+	}
+
+	&__card--digital &__media img {
+		object-fit: contain;
+		padding: 1rem;
+	}
+
+	&__card:hover &__media img {
+		transform: scale(1.035);
+	}
+
+	&__content {
 		display: flex;
+		flex: 1;
 		flex-direction: column;
 		justify-content: space-between;
-		min-height: clamp(22rem, 55vh, 30rem);
-		padding: 2.25rem;
-		transition:
-			opacity 0.3s ease,
-			transform 0.55s v.$ease-editorial;
+		gap: 1.5rem;
+		min-height: 15rem;
+		padding: clamp(1.25rem, 2.1vw, 2rem);
 
 		span,
 		small {
-			font-size: 0.78rem;
-			letter-spacing: 0.1em;
+			font-size: 0.7rem;
+			letter-spacing: 0.09em;
 			text-transform: uppercase;
 		}
 
 		strong {
 			font-family: v.$font-serif;
-			font-size: clamp(1.4rem, 2vw, 2.2rem);
+			font-size: clamp(1.35rem, 1.9vw, 2rem);
 			font-weight: 400;
 			line-height: 1.25;
 		}
-	}
 
-	&__media {
-		position: absolute;
-		inset: 0;
-		z-index: 2;
-		display: grid;
-		place-items: center;
-		overflow: hidden;
-		opacity: 0.4;
-		transition:
-			clip-path 0.82s v.$ease-editorial,
-			opacity 0.45s ease;
-		will-change: clip-path;
-
-		&::after {
-			content: '';
-			position: absolute;
-			inset: 0;
-			background: linear-gradient(180deg, transparent 55%, rgba(20, 17, 13, 0.68));
+		small {
+			color: rgba(38, 37, 34, 0.68);
 		}
-
-		img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			transform: scale(1.1);
-			transition: transform 1.15s v.$ease-editorial;
-		}
-	}
-
-	&__media-caption {
-		position: absolute;
-		right: 1.5rem;
-		bottom: 1.5rem;
-		left: 1.5rem;
-		z-index: 1;
-		color: v.$color-page;
-		font-size: 0.72rem;
-		letter-spacing: 0.12em;
-		text-align: center;
-		text-transform: uppercase;
-		opacity: 0;
-		transform: translateY(0.8rem);
-		transition:
-			opacity 0.32s ease,
-			transform 0.45s v.$ease-editorial;
 	}
 
 	@media (max-width: 1200px) {
 		grid-template-columns: 1fr;
+		gap: 2rem;
 		padding: clamp(4rem, 7vh, 5rem) v.$page-gutter;
-
-		&__eyebrow {
-			margin-bottom: 2rem;
-		}
-
-		&__stack {
-			margin-top: 0;
-		}
 	}
 
 	@include m.tablet {
@@ -252,7 +145,6 @@
 		&__stack {
 			display: flex;
 			gap: 1rem;
-			margin-top: 0;
 			overflow-x: auto;
 			scroll-snap-type: x mandatory;
 			scrollbar-width: none;
@@ -264,59 +156,18 @@
 
 		&__card {
 			flex: 0 0 84%;
-			min-height: 19rem;
-			transform: none;
 			scroll-snap-align: center;
 		}
 
 		&__content {
-			min-height: 19rem;
-			padding: 1.4rem;
-		}
-	}
-
-	@media (hover: none), (pointer: coarse) {
-		&__hint-desktop {
-			display: none;
-		}
-
-		&__hint-touch {
-			display: inline;
-		}
-	}
-
-	@media (min-width: 901px) and (max-height: 760px) {
-		padding-top: 3rem;
-		padding-bottom: 3rem;
-
-		&__eyebrow {
-			margin-bottom: 1.5rem;
-		}
-
-		&__card,
-		&__content {
-			min-height: 20rem;
+			min-height: 13rem;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		&__card,
-		&__content,
-		&__media,
-		&__media img,
-		&__media-caption {
-			transition-duration: 0.01ms;
+		&__media img {
+			transition: none;
 		}
-	}
-}
-
-@keyframes formats-hint {
-	0%,
-	100% {
-		transform: translateY(0);
-	}
-
-	50% {
-		transform: translateY(0.3rem);
 	}
 }

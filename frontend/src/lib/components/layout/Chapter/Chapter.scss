@@ -1,39 +1,19 @@
 @use '@/styles/variables' as v;
 
 .chapter {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	backface-visibility: hidden;
-	transform: translateX(calc(var(--page-turn) * -18vw)) rotateY(calc(var(--page-turn) * -108deg));
-	transform-origin: left center;
-	transform-style: preserve-3d;
-	will-change: transform;
+	position: relative;
+	min-height: 78svh;
+	scroll-margin-top: 5.5rem;
 
 	&__sheet {
 		position: relative;
-		height: 100%;
-		overflow: hidden;
+		min-height: inherit;
 		background: v.$color-milk;
-		box-shadow: calc(var(--page-turn) * 3rem) 0 5rem rgba(20, 18, 14, 0.34);
-	}
-
-	&__sheet::after {
-		content: '';
-		position: absolute;
-		z-index: 5;
-		inset: 0 auto 0 0;
-		width: 14%;
-		background: linear-gradient(90deg, rgba(33, 27, 20, 0.4), transparent);
-		opacity: calc(var(--page-turn) * 0.8);
-		pointer-events: none;
 	}
 
 	&__content {
 		position: relative;
 		z-index: 1;
-		height: 100%;
 	}
 
 	&__folio {
@@ -64,39 +44,16 @@
 		background: v.$color-night;
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		position: relative;
-		inset: auto;
-		height: auto;
-		transform: none;
+	@media (max-width: 1024px) {
+		min-height: 0;
 
-		&__sheet,
-		&__content {
-			height: auto;
-			overflow: visible;
+		&__sheet {
+			min-height: 0;
 		}
 
-		&__sheet::after {
-			display: none;
+		&__folio {
+			top: 0.9rem;
+			right: v.$page-gutter-mobile;
 		}
 	}
-
-	@media (max-width: 1024px), (hover: none), (pointer: coarse) {
-		position: relative;
-		inset: auto;
-		height: auto;
-		transform: none;
-		will-change: auto;
-
-		&__sheet,
-		&__content {
-			height: auto;
-			overflow: visible;
-		}
-
-		&__sheet::after {
-			display: none;
-		}
-	}
-
 }
