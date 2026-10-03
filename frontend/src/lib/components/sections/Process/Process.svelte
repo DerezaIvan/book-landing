@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { parallax } from '@/actions/parallax';
 	import { reveal } from '@/actions/reveal';
 
 	const chapters = [
@@ -24,7 +25,7 @@
 </script>
 
 <section class="process">
-	<div class="process__heading" data-reveal="split" use:reveal>
+	<div class="process__heading" data-reveal="split" use:reveal use:parallax={0.05}>
 		<span class="process__eyebrow">Как рождается история</span>
 		<h2>От первой детали<br />до книги, <em>которая останется</em></h2>
 	</div>

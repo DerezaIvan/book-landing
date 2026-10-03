@@ -8,7 +8,21 @@
 	align-items: center;
 	min-height: 100%;
 	padding: clamp(1.5rem, 2.5vw, 3rem);
-	background: #ddd3c1;
+	background:
+		radial-gradient(circle at 12% 20%, rgba(232, 184, 120, 0.22), transparent 34%),
+		radial-gradient(circle at 92% 88%, rgba(168, 87, 91, 0.14), transparent 30%),
+		#ddd3c1;
+
+	&__eyebrow {
+		@include m.uppercase-label;
+
+		color: v.$color-berry;
+
+		&::before {
+			content: '✦ ';
+			color: v.$color-apricot;
+		}
+	}
 
 	&__portrait {
 		position: relative;
@@ -19,10 +33,16 @@
 		overflow: hidden;
 		background: #bcb29e center / cover;
 		border: 1px solid rgba(white, 0.5);
-		border-radius: 1.35rem;
+		border-radius: 999px 999px 1.35rem 1.35rem;
 		box-shadow:
 			0 2.2rem 4.5rem rgba(55, 43, 30, 0.24),
-			0 0.35rem 0.8rem rgba(55, 43, 30, 0.12);
+			0 0.35rem 0.8rem rgba(55, 43, 30, 0.12),
+			0 0 0 0.7rem #f2ede3,
+			0 0 0 calc(0.7rem + 1px) rgba(168, 87, 91, 0.35);
+		translate: 0 var(--py, 0);
+		transform: perspective(1100px) rotateX(var(--tilt-rx, 0deg)) rotateY(var(--tilt-ry, 0deg));
+		transition: transform 0.5s v.$ease-editorial;
+		will-change: transform;
 
 		img {
 			display: block;
@@ -65,10 +85,6 @@
 		}
 	}
 
-	&__eyebrow {
-		@include m.uppercase-label;
-	}
-
 	&__lead {
 		font-family: v.$font-serif;
 		font-size: 1.25rem !important;
@@ -77,9 +93,12 @@
 
 	&__signature {
 		margin-top: 3rem;
-		font-family: v.$font-serif;
-		font-size: 1.7rem;
-		font-style: italic;
+		color: v.$color-berry;
+		font-family: v.$font-script;
+		font-size: 2.6rem;
+		font-style: normal;
+		transform: rotate(-2deg);
+		transform-origin: left center;
 	}
 
 	@include m.tablet {
@@ -116,6 +135,7 @@
 			justify-self: center;
 			width: min(100%, 24rem);
 			aspect-ratio: 16 / 10;
+			border-radius: 1.35rem;
 
 			img {
 				object-position: center 24%;
@@ -143,7 +163,7 @@
 
 		&__signature {
 			margin-top: 1rem;
-			font-size: 1.35rem;
+			font-size: 1.9rem;
 		}
 	}
 }

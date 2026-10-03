@@ -13,10 +13,20 @@
 
 		display: block;
 		margin-bottom: 2rem;
+		color: v.$color-berry;
+
+		&::before {
+			content: '✦ ';
+			color: v.$color-apricot;
+		}
 	}
 
 	&__title h2 {
 		@include m.editorial-heading(clamp(2.6rem, 4.6vw, 5.2rem));
+	}
+
+	&__title {
+		translate: 0 var(--py, 0);
 	}
 
 	&__showcase,
@@ -39,13 +49,26 @@
 		border: 1px solid rgba(48, 54, 45, 0.12);
 		border-radius: 1.2rem;
 		box-shadow: 0 1.4rem 3rem rgba(58, 42, 26, 0.12);
+		translate: 0 var(--py, 0);
 		transition:
-			transform 0.45s v.$ease-editorial,
-			box-shadow 0.45s ease;
+			transform 0.5s v.$ease-editorial,
+			box-shadow 0.5s ease;
+		will-change: transform;
+
+		&--print {
+			transform: rotate(-1.6deg) perspective(1000px) rotateX(var(--tilt-rx, 0deg))
+				rotateY(var(--tilt-ry, 0deg));
+		}
+
+		&--digital {
+			transform: rotate(1.6deg) perspective(1000px) rotateX(var(--tilt-rx, 0deg))
+				rotateY(var(--tilt-ry, 0deg));
+		}
 
 		&:hover {
-			box-shadow: 0 1.8rem 3.5rem rgba(58, 42, 26, 0.19);
-			transform: translateY(-0.35rem);
+			box-shadow:
+				0 2.2rem 4.2rem rgba(58, 42, 26, 0.22),
+				0 0 0 1px rgba(v.$color-apricot, 0.4);
 		}
 
 		&--print .formats__media {
@@ -64,6 +87,9 @@
 		width: 100%;
 		aspect-ratio: 1.25;
 		overflow: hidden;
+		border-radius: 42% 42% 0 0 / 16% 16% 0 0;
+		margin: 0.7rem 0.7rem 0;
+		width: calc(100% - 1.4rem);
 
 		&::after {
 			content: '';
@@ -157,6 +183,7 @@
 		&__card {
 			flex: 0 0 84%;
 			scroll-snap-align: center;
+			transform: none;
 		}
 
 		&__content {

@@ -9,6 +9,7 @@
 	import Hero from '@/components/sections/Hero/Hero.svelte';
 	import Manifesto from '@/components/sections/Manifesto/Manifesto.svelte';
 	import Process from '@/components/sections/Process/Process.svelte';
+	import Ribbon from '@/components/layout/Ribbon/Ribbon.svelte';
 	import StoryShowcase from '@/components/sections/StoryShowcase/StoryShowcase.svelte';
 	import Studio from '@/components/sections/Studio/Studio.svelte';
 </script>
@@ -77,6 +78,7 @@
 	<Header />
 	<main id="top">
 		<Hero />
+		<Ribbon />
 		<BookFlow>
 			<Chapter id="stories" index="02" tone="milk"><Manifesto /></Chapter>
 			<Chapter id="story-showcase" index="03" tone="milk"><StoryShowcase /></Chapter>

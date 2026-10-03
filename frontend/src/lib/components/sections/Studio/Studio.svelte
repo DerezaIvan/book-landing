@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { parallax } from '@/actions/parallax';
 	import { reveal } from '@/actions/reveal';
+	import { tilt } from '@/actions/tilt';
 </script>
 
 <section class="studio">
-	<figure class="studio__portrait is-visible" data-reveal="curtain" use:reveal>
+	<figure class="studio__portrait" use:parallax={0.08} use:tilt={3.5}>
 		<img
 			src={`${base}/images/founders.jpg`}
 			alt="Иван и Алина Дереза, основатели семейной студии"

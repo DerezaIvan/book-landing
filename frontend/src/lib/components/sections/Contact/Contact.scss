@@ -8,21 +8,94 @@
 	overflow: hidden;
 	color: #f7efe3;
 	text-align: center;
-	background: v.$color-night;
+	background:
+		radial-gradient(ellipse 110% 55% at 50% 112%, rgba(63, 52, 74, 0.5), transparent 62%),
+		linear-gradient(180deg, #101613, v.$color-night 55%, #0a0e0c);
+
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: 0;
+		inset: 0;
+		background: radial-gradient(
+			36rem circle at var(--mx, 50%) var(--my, 30%),
+			rgba(240, 205, 143, 0.08),
+			transparent 65%
+		);
+		pointer-events: none;
+	}
 
 	&__orbit {
 		position: absolute;
-		top: 4rem;
+		top: 36%;
 		left: 50%;
 		width: 44rem;
 		aspect-ratio: 1;
-		border: 1px solid rgba(white, 0.08);
+		border: 1px solid rgba(240, 205, 143, 0.16);
 		border-radius: 50%;
-		transform: translateX(-50%);
+		transform: translate(-50%, -50%);
+		box-shadow:
+			0 0 6rem rgba(240, 205, 143, 0.12),
+			inset 0 0 6rem rgba(240, 205, 143, 0.08);
+		animation: glow-pulse 9s ease-in-out infinite;
+
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			border-radius: 50%;
+		}
+
+		&::before {
+			inset: 18%;
+			border: 1px dashed rgba(240, 205, 143, 0.12);
+		}
+
+		&::after {
+			top: 12%;
+			left: 68%;
+			width: 0.55rem;
+			aspect-ratio: 1;
+			background: v.$color-gold;
+			box-shadow: 0 0 1.4rem 0.35rem rgba(240, 205, 143, 0.65);
+		}
 	}
 
 	&__eyebrow {
 		@include m.uppercase-label;
+
+		position: relative;
+		z-index: 1;
+		color: v.$color-gold;
+
+		&::before,
+		&::after {
+			content: '✦';
+			margin: 0 0.8rem;
+			font-size: 0.7em;
+		}
+	}
+
+	&__stars {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 2px;
+		height: 2px;
+		border-radius: 50%;
+		background: transparent;
+		pointer-events: none;
+
+		&--near {
+			box-shadow: m.star-field(42, 1920, 700, 5);
+			animation: twinkle 4.4s ease-in-out infinite;
+		}
+
+		&--far {
+			opacity: 0.55;
+			box-shadow: m.star-field(60, 1920, 800, 17);
+			animation: twinkle 6.2s ease-in-out 1.8s infinite;
+		}
 	}
 
 	h2 {
@@ -33,8 +106,13 @@
 		margin: clamp(1.25rem, 2.5vh, 2rem) auto;
 
 		em {
-			color: #e5b77f;
 			font-weight: 400;
+			background: linear-gradient(100deg, #e8b878 20%, #f7e3ba 40%, #e8b878 60%);
+			background-size: 200% auto;
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			animation: shimmer 8s linear infinite;
 		}
 	}
 
@@ -59,7 +137,11 @@
 		padding: clamp(1.5rem, 3vw, 3rem);
 		text-align: left;
 		background: rgba(255, 255, 255, 0.045);
-		border: 1px solid rgba(255, 255, 255, 0.14);
+		border: 1px solid rgba(240, 205, 143, 0.22);
+		border-radius: 1.4rem;
+		box-shadow:
+			0 2rem 5rem rgba(4, 6, 5, 0.5),
+			0 0 4rem rgba(240, 205, 143, 0.07);
 		backdrop-filter: blur(12px);
 	}
 
@@ -106,6 +188,7 @@
 			padding: 0.75rem 1.2rem;
 			background: rgba(255, 255, 255, 0.055);
 			border: 1px solid rgba(255, 255, 255, 0.12);
+			border-radius: 0.8rem;
 			transition:
 				background 0.3s ease,
 				border-color 0.3s ease;
@@ -144,7 +227,8 @@
 				font-size: 0.62rem;
 				opacity: 1;
 				transform: translateY(-50%);
-				background: v.$color-night;
+				background: #1d2420;
+				border-radius: 0.4rem;
 			}
 		}
 
@@ -167,16 +251,21 @@
 			justify-content: space-between;
 			min-height: 4.25rem;
 			padding: 0.65rem 0.75rem 0.65rem 1.4rem;
-			color: v.$color-ink;
-			background: #e4b587;
+			color: v.$color-night-deep;
+			font-weight: 600;
+			letter-spacing: 0.02em;
+			background: linear-gradient(120deg, #f3d9a7, v.$color-apricot 60%, #dfa963);
 			border: 0;
+			border-radius: 0.9rem;
+			box-shadow: 0 1rem 2.6rem rgba(232, 184, 120, 0.25);
 			cursor: pointer;
 			transition:
-				transform 0.3s ease,
-				background 0.3s ease;
+				transform 0.35s v.$ease-spring,
+				translate 0.45s v.$ease-spring,
+				box-shadow 0.35s ease;
 
 			&:hover {
-				background: #efc79e;
+				box-shadow: 0 1.4rem 3.4rem rgba(232, 184, 120, 0.45);
 				transform: translateY(-0.2rem);
 
 				i {
@@ -191,9 +280,9 @@
 				aspect-ratio: 1;
 				font-size: 1.15rem;
 				font-style: normal;
-				border: 1px solid rgba(v.$color-ink, 0.3);
+				border: 1px solid rgba(v.$color-night-deep, 0.35);
 				border-radius: 50%;
-				transition: transform 0.3s ease;
+				transition: transform 0.3s v.$ease-spring;
 			}
 
 			&:disabled {

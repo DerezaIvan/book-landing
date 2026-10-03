@@ -1,16 +1,18 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { parallax } from '@/actions/parallax';
 	import { reveal } from '@/actions/reveal';
+	import { tilt } from '@/actions/tilt';
 </script>
 
 <section class="formats">
-	<div class="formats__title" data-reveal="slide" use:reveal>
+	<div class="formats__title" data-reveal="slide" use:reveal use:parallax={0.05}>
 		<span class="formats__eyebrow">Печатная и цифровая версии</span>
 		<h2>История в том<br />формате, который<br />останется с вами</h2>
 	</div>
 	<div class="formats__showcase">
 		<div class="formats__stack" data-reveal="stack" use:reveal>
-			<article class="formats__card formats__card--print">
+			<article class="formats__card formats__card--print" use:parallax={0.06} use:tilt={3}>
 				<div class="formats__media">
 					<img
 						src={`${base}/images/format-print-book.jpg`}
@@ -26,7 +28,7 @@
 					<small>Плотная бумага · подарочная упаковка</small>
 				</div>
 			</article>
-			<article class="formats__card formats__card--digital">
+			<article class="formats__card formats__card--digital" use:parallax={-0.06} use:tilt={3}>
 				<div class="formats__media">
 					<img
 						src={`${base}/images/format-digital-story.jpg`}

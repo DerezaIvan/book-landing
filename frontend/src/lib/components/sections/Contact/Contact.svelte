@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { magnetic } from '@/actions/magnetic';
+	import { spotlight } from '@/actions/spotlight';
+
 	let formStatus = $state<'idle' | 'sending' | 'success' | 'error'>('idle');
 
 	async function submitApplication(event: SubmitEvent) {
@@ -23,8 +26,10 @@
 	}
 </script>
 
-<section class="contact">
+<section class="contact" use:spotlight>
 	<div class="contact__orbit" aria-hidden="true"></div>
+	<div class="contact__stars contact__stars--near" aria-hidden="true"></div>
+	<div class="contact__stars contact__stars--far" aria-hidden="true"></div>
 	<span class="contact__eyebrow">Начнём с разговора</span>
 	<h2>Какую историю<br />мы расскажем <em>вместе?</em></h2>
 	<p class="contact__intro">
@@ -45,7 +50,7 @@
 					<span>Телефон или Telegram</span>
 					<input name="contact" autocomplete="tel" placeholder=" " required />
 				</label>
-				<button type="submit" disabled={formStatus === 'sending'}>
+				<button type="submit" disabled={formStatus === 'sending'} use:magnetic={0.18}>
 					<span>{formStatus === 'sending' ? 'Отправляем…' : 'Обсудить книгу'}</span>
 					<i aria-hidden="true">→</i>
 				</button>

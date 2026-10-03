@@ -14,8 +14,13 @@
 		white-space: nowrap;
 
 		em {
-			color: #e4b587;
 			font-weight: 400;
+			background: linear-gradient(100deg, #e8b878, #f7e3ba 50%, #e8b878);
+			background-size: 200% auto;
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			animation: shimmer 9s linear infinite;
 		}
 	}
 

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { magnetic } from '@/actions/magnetic';
+
 	let menuOpen = $state(false);
 
 	function closeMenu() {
@@ -30,8 +32,8 @@
 		<a href="#stories" onclick={closeMenu}>Истории</a>
 		<a href="#studio" onclick={closeMenu}>О студии</a>
 	</nav>
-	<a class="site-header__cta" href="#contact" onclick={closeMenu}>
-		Обсудить книгу <span>↗</span>
+	<a class="site-header__cta" href="#contact" onclick={closeMenu} use:magnetic>
+		Обсудить книгу <span aria-hidden="true">✦</span>
 	</a>
 </header>
 

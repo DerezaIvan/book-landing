@@ -1,4 +1,20 @@
+@use 'sass:list';
 @use '@/styles/variables' as v;
+
+@function star-field($count, $max-x, $max-y, $seed) {
+	$shadows: ();
+	@for $i from 1 through $count {
+		$x: ($i * 137 + $seed * 61) % $max-x;
+		$y: ($i * 211 + $seed * 89) % $max-y;
+		$size: 1 + (($i * 7 + $seed) % 2);
+		$shadows: list.append(
+			$shadows,
+			#{$x}px #{$y}px 0 #{$size - 1}px rgba(255, 244, 214, 0.9),
+			comma
+		);
+	}
+	@return $shadows;
+}
 
 @mixin absolute-fill {
 	position: absolute;

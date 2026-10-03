@@ -9,6 +9,8 @@
 		position: relative;
 		min-height: inherit;
 		background: v.$color-milk;
+		border-radius: 2.2rem 2.2rem 0 0;
+		box-shadow: 0 -1.4rem 3.5rem rgba(12, 17, 15, 0.28);
 	}
 
 	&__content {
@@ -44,11 +46,18 @@
 		background: v.$color-night;
 	}
 
+	&--forest .chapter__folio,
+	&--night .chapter__folio {
+		opacity: 0.55;
+		color: #f8f3e9;
+	}
+
 	@media (max-width: 1024px) {
 		min-height: 0;
 
 		&__sheet {
 			min-height: 0;
+			border-radius: 1.4rem 1.4rem 0 0;
 		}
 
 		&__folio {

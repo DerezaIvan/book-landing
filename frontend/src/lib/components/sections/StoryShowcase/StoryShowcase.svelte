@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { parallax } from '@/actions/parallax';
 	import { reveal } from '@/actions/reveal';
+	import { spotlight } from '@/actions/spotlight';
+	import { tilt } from '@/actions/tilt';
 
 	let activeSlide = $state(0);
 	let direction = $state<'next' | 'previous'>('next');
@@ -9,22 +12,22 @@
 
 	const scenes = [
 		{
-			src: `${base}/images/misha-star-ball-cover.jpg`,
-			alt: 'Миша и Зайчик Топ на обложке книги «Миша и звёздный мяч»',
-			label: 'Обложка',
-			text: 'Знакомство с героем и миром, в который захочется возвращаться.'
+			src: `${base}/images/eva-walk-spread.jpg`,
+			alt: 'Разворот книги: Ева гуляет с мамой, папой и щенком Каспером по берёзовой роще',
+			label: 'Лесная прогулка',
+			text: 'Знакомые семейные детали становятся началом истории, в которой ребёнок — главный герой.'
 		},
 		{
-			src: `${base}/images/misha-star-ball-discovery.jpg`,
-			alt: 'Миша и Зайчик Топ находят мяч с жёлтой звездой',
-			label: 'Приключение',
-			text: 'Любимый интерес ребёнка становится частью сюжета и отправной точкой приключения.'
+			src: `${base}/images/eva-squirrel-spread.jpg`,
+			alt: 'Разворот книги: Ева угощает рыжую белочку ягодами рядом с пеньком',
+			label: 'Новый друг',
+			text: 'Любимые звери и интересы ребёнка вплетаются в сюжет и ведут приключение дальше.'
 		},
 		{
-			src: `${base}/images/misha-star-ball-finale.jpg`,
-			alt: 'Миша и Зайчик Топ прощаются на закате',
-			label: 'Финал истории',
-			text: 'Тёплая последняя страница, которую можно перечитывать вместе.'
+			src: `${base}/images/emilia-lemur.jpg`,
+			alt: 'Иллюстрация: Эмилия угощает лемура печеньем на поляне над Солнечной бухтой',
+			label: 'Пикник в бухте',
+			text: 'Тёплые сцены, которые хочется перечитывать вместе — сегодня и много лет спустя.'
 		}
 	];
 
@@ -70,11 +73,11 @@
 
 <svelte:window onkeydown={handleLightboxKeydown} />
 
-<section class="story-showcase" aria-labelledby="story-showcase-title">
-	<header class="story-showcase__heading" data-reveal="words" use:reveal>
+<section class="story-showcase" aria-labelledby="story-showcase-title" use:spotlight>
+	<header class="story-showcase__heading" data-reveal="words" use:reveal use:parallax={0.05}>
 		<div>
 			<span class="story-showcase__eyebrow">Загляните внутрь</span>
-			<h2 id="story-showcase-title">Три страницы одной истории</h2>
+			<h2 id="story-showcase-title">Страницы настоящей истории</h2>
 		</div>
 		<p>
 			Книга создаётся вокруг ребёнка — от первой встречи с героем до финала, который хочется
@@ -82,7 +85,7 @@
 		</p>
 	</header>
 
-	<div class="story-showcase__reader">
+	<div class="story-showcase__reader" use:tilt={2.5}>
 		{#key activeSlide}
 			<article
 				class="story-showcase__spread story-showcase__spread--{direction}"
@@ -100,8 +103,8 @@
 					<img
 						src={scenes[activeSlide].src}
 						alt={scenes[activeSlide].alt}
-						width="1400"
-						height="788"
+						width="1920"
+						height="960"
 					/>
 					<span class="story-showcase__zoom" aria-hidden="true">Увеличить ↗</span>
 				</button>
